@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Comunidad Conectada: una propuesta digital para fomentar la participación ciudadana y ayudar a resolver problemas comunitarios.">
+  <title>Comunidad Conectada | Mi comunidad, mi responsabilidad</title>
+  <style>
+    :root {
+      --navy: #12304a;
+      --blue: #1769aa;
+      --sky: #eaf5ff;
+      --teal: #168b83;
+      --ink: #1f2937;
+      --muted: #627184;
+      --paper: #ffffff;
+      --line: #dce6ef;
+      --soft: #f5f9fc;
+      --gold: #f2b84b;
+      --shadow: 0 16px 45px rgba(18,48,74,.10);
+      --radius: 22px;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; scroll-padding-top: 88px; }
+    body {
+      margin: 0; font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: var(--ink); background: var(--paper); line-height: 1.65;
+    }
+    a { color: inherit; }
+    button, input, select, textarea { font: inherit; }
+    .container { width: min(1120px, calc(100% - 40px)); margin: auto; }
+    header {
+      position: sticky; top: 0; z-index: 20; background: rgba(255,255,255,.94);
+      backdrop-filter: blur(14px); border-bottom: 1px solid rgba(220,230,239,.85);
+    }
+    .nav { min-height: 76px; display: flex; align-items: center; justify-content: space-between; gap: 24px; }
+    .brand { display: flex; align-items: center; gap: 11px; text-decoration: none; font-weight: 850; color: var(--navy); letter-spacing: -.4px; }
+    .brand-mark { width: 42px; height: 42px; display: grid; place-items: center; border-radius: 14px; background: var(--blue); color: white; font-size: 22px; }
+    .nav-links { display: flex; gap: 21px; align-items: center; }
+    .nav-links a { text-decoration: none; font-size: .91rem; color: #45566a; font-weight: 650; }
+    .nav-links a:hover { color: var(--blue); }
+    .menu-toggle { display: none; border: 1px solid var(--line); background: white; border-radius: 12px; padding: 8px 12px; color: var(--navy); }
+    .btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 12px 19px; border-radius: 13px; text-decoration: none; font-weight: 750; border: 0; cursor: pointer; transition: transform .18s, box-shadow .18s; }
+    .btn:hover { transform: translateY(-2px); }
+    .btn-primary { background: var(--blue); color: white; box-shadow: 0 8px 20px rgba(23,105,170,.22); }
+    .btn-light { background: white; color: var(--navy); border: 1px solid var(--line); }
+    .hero { position: relative; overflow: hidden; background: linear-gradient(135deg, #edf7ff 0%, #f8fcff 56%, #e5f7f2 100%); padding: 82px 0 76px; }
+    .hero::before, .hero::after { content: ""; position: absolute; border-radius: 50%; pointer-events: none; }
+    .hero::before { width: 370px; height: 370px; background: rgba(23,105,170,.07); top: -190px; right: -80px; }
+    .hero::after { width: 250px; height: 250px; background: rgba(22,139,131,.08); bottom: -160px; left: 25%; }
+    .hero-grid { display: grid; grid-template-columns: 1.12fr .88fr; align-items: center; gap: 50px; position: relative; z-index: 1; }
+    .eyebrow { display: inline-flex; align-items: center; gap: 8px; padding: 7px 12px; border: 1px solid #cfe4f5; background: rgba(255,255,255,.72); color: var(--blue); border-radius: 999px; font-size: .82rem; font-weight: 800; }
+    h1 { color: var(--navy); font-size: clamp(2.6rem, 5.6vw, 4.6rem); line-height: 1.04; letter-spacing: -2.7px; margin: 22px 0; }
+    h1 span { color: var(--blue); }
+    .hero p { color: #526579; font-size: 1.12rem; max-width: 620px; }
+    .hero-actions { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 27px; }
+    .hero-note { font-size: .86rem !important; margin-top: 18px; color: #6b7a8b !important; }
+    .illustration { min-height: 365px; position: relative; display: grid; place-items: center; }
+    .community-card { width: min(100%, 410px); background: rgba(255,255,255,.92); border: 1px solid white; border-radius: 28px; padding: 25px; box-shadow: var(--shadow); transform: rotate(1.5deg); }
+    .community-card h3 { margin: 0 0 5px; color: var(--navy); }
+    .community-card > p { margin: 0 0 20px; font-size: .9rem; }
+    .mini-report { display: flex; gap: 13px; align-items: center; background: var(--soft); border: 1px solid var(--line); border-radius: 16px; padding: 13px; margin-top: 10px; }
+    .mini-icon { width: 43px; height: 43px; display: grid; place-items: center; flex-shrink: 0; border-radius: 13px; background: #e0f1ff; font-size: 21px; }
+    .mini-report strong { display: block; color: var(--navy); font-size: .94rem; }
+    .mini-report small { color: var(--muted); }
+    .status { display: inline-block; margin-top: 4px; padding: 2px 8px; border-radius: 99px; font-size: .72rem; background: #fff1ce; color: #83570b; font-weight: 800; }
+    section { padding: 78px 0; }
+    .section-head { max-width: 730px; margin-bottom: 34px; }
+    .kicker { color: var(--teal); text-transform: uppercase; letter-spacing: 1.5px; font-size: .78rem; font-weight: 850; }
+    h2 { font-size: clamp(2rem, 3.8vw, 3rem); line-height: 1.12; letter-spacing: -1.3px; color: var(--navy); margin: 10px 0 14px; }
+    .section-head p { color: var(--muted); font-size: 1.04rem; margin: 0; }
+    .problem-grid, .feature-grid, .people-grid, .steps-grid, .evaluation-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+    .card { border: 1px solid var(--line); border-radius: var(--radius); padding: 23px; background: white; }
+    .card h3 { margin: 13px 0 8px; color: var(--navy); font-size: 1.08rem; }
+    .card p { margin: 0; color: var(--muted); font-size: .94rem; }
+    .icon-box { width: 49px; height: 49px; border-radius: 15px; display: grid; place-items: center; background: var(--sky); font-size: 24px; }
+    .tint { background: var(--soft); }
+    .split { display: grid; grid-template-columns: .9fr 1.1fr; gap: 55px; align-items: start; }
+    .check-list { padding: 0; margin: 24px 0 0; list-style: none; }
+    .check-list li { display: flex; gap: 12px; margin: 14px 0; color: #4e5f71; }
+    .check { flex-shrink: 0; width: 25px; height: 25px; border-radius: 50%; display: grid; place-items: center; color: white; background: var(--teal); font-size: .8rem; font-weight: 900; }
+    .workflow { border-radius: 26px; padding: 26px; background: white; border: 1px solid var(--line); box-shadow: var(--shadow); }
+    .workflow-step { display: flex; gap: 16px; padding: 16px 0; border-bottom: 1px solid var(--line); }
+    .workflow-step:last-child { border-bottom: 0; }
+    .number { width: 38px; height: 38px; flex-shrink: 0; border-radius: 12px; display: grid; place-items: center; background: var(--navy); color: white; font-weight: 850; }
+    .workflow-step strong { color: var(--navy); }
+    .workflow-step p { margin: 3px 0 0; color: var(--muted); font-size: .92rem; }
+    .participation { background: linear-gradient(140deg, var(--navy), #174d72); color: white; }
+    .participation h2, .participation .section-head p { color: white; }
+    .participation .kicker { color: #8be0d3; }
+    .participation .card { background: rgba(255,255,255,.08); border-color: rgba(255,255,255,.15); }
+    .participation .card h3 { color: white; }
+    .participation .card p { color: #d3e4f0; }
+    .participation .icon-box { background: rgba(255,255,255,.13); }
+    .callout { margin-top: 27px; padding: 18px 20px; border-radius: 16px; background: rgba(255,255,255,.1); border: 1px solid rgba(255,255,255,.18); color: #e3f0f7; }
+    .status-list { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; margin-top: 20px; }
+    .status-item { text-align: center; padding: 16px 8px; background: white; border: 1px solid var(--line); border-radius: 15px; }
+    .status-dot { width: 12px; height: 12px; border-radius: 50%; display: block; margin: 0 auto 8px; background: #e3ad35; }
+    .status-item:nth-child(2) .status-dot { background: #5b8bd8; }
+    .status-item:nth-child(3) .status-dot { background: #8a75d4; }
+    .status-item:nth-child(4) .status-dot { background: #168b83; }
+    .status-item:nth-child(5) .status-dot { background: #27864c; }
+    .status-item strong { display: block; font-size: .82rem; color: var(--navy); }
+    .status-item small { font-size: .74rem; color: var(--muted); }
+    .demo-wrap { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; align-items: start; }
+    .demo-form { border: 1px solid var(--line); border-radius: 24px; padding: 25px; background: white; box-shadow: var(--shadow); }
+    .demo-form label { display: block; margin: 14px 0 6px; color: var(--navy); font-size: .9rem; font-weight: 750; }
+    .demo-form input, .demo-form select, .demo-form textarea { width: 100%; padding: 12px 13px; border: 1px solid #cfdbe6; border-radius: 11px; background: #fbfdff; color: var(--ink); outline: none; }
+    .demo-form input:focus, .demo-form select:focus, .demo-form textarea:focus { border-color: var(--blue); box-shadow: 0 0 0 3px rgba(23,105,170,.1); }
+    .demo-form textarea { resize: vertical; min-height: 100px; }
+    .demo-form .btn { width: 100%; margin-top: 17px; }
+    .demo-note { font-size: .8rem; color: var(--muted); margin: 12px 0 0; }
+    .reports-panel { background: var(--soft); border: 1px solid var(--line); border-radius: 24px; padding: 23px; }
+    .reports-top { display: flex; justify-content: space-between; gap: 10px; align-items: center; margin-bottom: 15px; }
+    .reports-top h3 { color: var(--navy); margin: 0; }
+    .demo-badge { font-size: .72rem; padding: 5px 9px; border-radius: 99px; background: #fff0c7; color: #79570c; font-weight: 850; }
+    .report { background: white; border: 1px solid var(--line); border-radius: 15px; padding: 15px; margin-top: 11px; }
+    .report-head { display: flex; justify-content: space-between; align-items: start; gap: 10px; }
+    .report h4 { color: var(--navy); margin: 0 0 4px; font-size: .98rem; }
+    .report p { color: var(--muted); font-size: .87rem; margin: 5px 0 10px; white-space: pre-wrap; overflow-wrap: anywhere; }
+    .tag { display: inline-block; font-size: .72rem; font-weight: 800; border-radius: 8px; padding: 4px 7px; background: #e8f4ff; color: #1b6094; }
+    .tag.idea { background: #e3f6ef; color: #167258; }
+    .report-meta { color: #7a8794; font-size: .75rem; }
+    .empty { text-align: center; padding: 30px 15px; color: var(--muted); }
+    .empty span { font-size: 30px; }
+    .timeline { display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; }
+    .timeline-item { border-top: 3px solid var(--blue); padding-top: 16px; }
+    .timeline-item strong { color: var(--navy); display: block; }
+    .timeline-item b { display: block; font-size: .8rem; color: var(--teal); margin: 4px 0; }
+    .timeline-item p { font-size: .9rem; color: var(--muted); margin: 0; }
+    .metric { font-size: 2rem; font-weight: 900; color: var(--blue); line-height: 1.2; }
+    .note-box { border-left: 4px solid var(--gold); padding: 17px 20px; background: #fff8e8; color: #72571c; border-radius: 0 14px 14px 0; margin-top: 25px; font-size: .92rem; }
+    .cta { text-align: center; background: var(--sky); }
+    .cta p { max-width: 650px; margin: 0 auto 24px; color: var(--muted); }
+    footer { padding: 28px 0; background: #0d2539; color: #d7e4ed; }
+    .footer-inner { display: flex; justify-content: space-between; align-items: center; gap: 20px; flex-wrap: wrap; }
+    footer strong { color: white; }
+    footer p { margin: 4px 0; font-size: .85rem; }
+    .back-top { color: #d7e4ed; text-decoration: none; font-size: .88rem; }
+    .toast { display: none; margin-top: 12px; padding: 12px; background: #e2f7ed; border: 1px solid #b5e6ce; border-radius: 12px; color: #176444; font-size: .9rem; }
+    .toast.show { display: block; }
+    @media (max-width: 850px) {
+      .hero-grid, .split, .demo-wrap { grid-template-columns: 1fr; }
+      .hero { padding: 60px 0; }
+      .illustration { min-height: 310px; }
+      .problem-grid, .feature-grid, .people-grid, .steps-grid, .evaluation-grid { grid-template-columns: repeat(2, 1fr); }
+      .nav-links { display: none; position: absolute; left: 0; right: 0; top: 76px; padding: 18px 22px 22px; background: white; border-bottom: 1px solid var(--line); flex-direction: column; align-items: stretch; }
+      .nav-links.open { display: flex; }
+      .menu-toggle { display: inline-flex; }
+      .status-list { grid-template-columns: repeat(3, 1fr); }
+    }
+    @media (max-width: 540px) {
+      .container { width: min(100% - 28px, 1120px); }
+      section { padding: 58px 0; }
+      .problem-grid, .feature-grid, .people-grid, .steps-grid, .evaluation-grid, .timeline { grid-template-columns: 1fr; }
+      .status-list { grid-template-columns: repeat(2, 1fr); }
+      h1 { letter-spacing: -1.5px; }
+      .community-card { padding: 18px; }
+      .hero-actions .btn { width: 100%; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container nav">
+      <a class="brand" href="#inicio" aria-label="Comunidad Conectada, inicio">
+        <span class="brand-mark">⌂</span><span>Comunidad Conectada</span>
+      </a>
+      <button class="menu-toggle" id="menuToggle" aria-expanded="false" aria-controls="navLinks">☰ Menú</button>
+      <nav class="nav-links" id="navLinks" aria-label="Navegación principal">
+        <a href="#propuesta">La propuesta</a>
+        <a href="#funciona">Cómo funciona</a>
+        <a href="#participacion">Participación</a>
+        <a href="#reportar">Reportar / proponer</a>
+        <a href="#plan">Plan de acción</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero" id="inicio">
+      <div class="container hero-grid">
+        <div>
+          <span class="eyebrow">🌱 Proyecto ciudadano · Mi comunidad, mi responsabilidad</span>
+          <h1>Una comunidad que se comunica <span>avanza.</span></h1>
+          <p>Comunidad Conectada es una propuesta de página web que busca acercar a los residentes, las juntas de vecinos y las instituciones para identificar problemas, compartir ideas y dar seguimiento a posibles soluciones.</p>
+          <div class="hero-actions">
+            <a class="btn btn-primary" href="#reportar">Participa en la demostración <span aria-hidden="true">→</span></a>
+            <a class="btn btn-light" href="#propuesta">Conoce la propuesta</a>
+          </div>
+          <p class="hero-note">La tecnología es una herramienta; el cambio se construye con la participación de todos.</p>
+        </div>
+        <div class="illustration" aria-label="Ejemplo ilustrativo de reportes comunitarios">
+          <div class="community-card">
+            <h3>El barrio, en un mismo lugar</h3>
+            <p>Ejemplo ilustrativo de cómo se verían los reportes.</p>
+            <div class="mini-report">
+              <div class="mini-icon">🗑️</div>
+              <div><strong>Basura acumulada</strong><small>Solicitud comunitaria</small><br><span class="status">En revisión · ejemplo</span></div>
+            </div>
+            <div class="mini-report">
+              <div class="mini-icon">💡</div>
+              <div><strong>Alumbrado de la calle</strong><small>Reporte de servicio</small><br><span class="status" style="background:#dcf5e8;color:#176444">Recibido · ejemplo</span></div>
+            </div>
+            <div class="mini-report">
+              <div class="mini-icon">🌳</div>
+              <div><strong>Jornada de limpieza</strong><small>Idea para colaborar</small><br><span class="status" style="background:#e6e4ff;color:#5043a1">Propuesta · ejemplo</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="propuesta">
+      <div class="container">
+        <div class="section-head">
+          <span class="kicker">01 · El problema</span>
+          <h2>¿Por qué necesitamos una iniciativa así?</h2>
+          <p>En algunas comunidades, los problemas se conocen entre los vecinos, pero no siempre existe una vía organizada para comunicarlos a las entidades responsables y saber qué pasó después.</p>
+        </div>
+        <div class="problem-grid">
+          <article class="card"><div class="icon-box">🗑️</div><h3>Espacios descuidados</h3><p>Basura acumulada, áreas comunes sucias o falta de organización para mantener el entorno.</p></article>
+          <article class="card"><div class="icon-box">🛣️</div><h3>Servicios y calles</h3><p>Deterioro de calles, hoyos, alumbrado dañado u otras necesidades que requieren atención.</p></article>
+          <article class="card"><div class="icon-box">🗣️</div><h3>Falta de seguimiento</h3><p>Las personas pueden no saber a quién reportar una situación o cómo consultar el estado de su solicitud.</p></article>
+        </div>
+        <div class="split" style="margin-top:50px">
+          <div>
+            <span class="kicker">La solución propuesta</span>
+            <h2>Un puente entre la comunidad y quienes pueden ayudar.</h2>
+            <p style="color:var(--muted)">La web organizaría reportes, propuestas y actividades en un solo lugar. También permitiría consultar el estado de las solicitudes cuando las personas responsables actualicen la información.</p>
+            <ul class="check-list">
+              <li><span class="check">✓</span><span>Facilitar la comunicación de necesidades comunitarias.</span></li>
+              <li><span class="check">✓</span><span>Motivar a los residentes a proponer soluciones, no solo señalar problemas.</span></li>
+              <li><span class="check">✓</span><span>Promover la colaboración con juntas de vecinos e instituciones.</span></li>
+              <li><span class="check">✓</span><span>Dar visibilidad al progreso de cada solicitud sin prometer resultados que no dependen de la web.</span></li>
+            </ul>
+          </div>
+          <div class="workflow" id="funciona">
+            <span class="kicker">02 · Cómo funciona</span>
+            <div class="workflow-step"><span class="number">1</span><div><strong>La persona participa</strong><p>Describe un problema o presenta una idea para mejorar su comunidad.</p></div></div>
+            <div class="workflow-step"><span class="number">2</span><div><strong>Se organiza la información</strong><p>La solicitud se clasifica por categoría y zona, evitando publicar datos personales innecesarios.</p></div></div>
+            <div class="workflow-step"><span class="number">3</span><div><strong>Se remite a quien corresponda</strong><p>Un administrador o equipo comunitario revisa el reporte y lo comunica a la entidad adecuada.</p></div></div>
+            <div class="workflow-step"><span class="number">4</span><div><strong>Se informa el seguimiento</strong><p>Cuando exista información confirmada, el estado puede actualizarse para que la comunidad lo consulte.</p></div></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="tint" id="funciones">
+      <div class="container">
+        <div class="section-head">
+          <span class="kicker">03 · Herramientas</span>
+          <h2>¿Qué ofrecería la página?</h2>
+          <p>La propuesta reúne herramientas sencillas para que participar sea más fácil y útil para la vida comunitaria.</p>
+        </div>
+        <div class="feature-grid">
+          <article class="card"><div class="icon-box">📣</div><h3>Reportes comunitarios</h3><p>Registrar situaciones como basura, alumbrado dañado, calles deterioradas o espacios públicos descuidados.</p></article>
+          <article class="card"><div class="icon-box">💡</div><h3>Buzón de propuestas</h3><p>Compartir ideas para mejorar servicios, convivencia, limpieza y cuidado del entorno.</p></article>
+          <article class="card"><div class="icon-box">🔎</div><h3>Seguimiento transparente</h3><p>Consultar estados como recibido, en revisión, en proceso, resuelto o pendiente de respuesta.</p></article>
+          <article class="card"><div class="icon-box">🤝</div><h3>Voluntariado</h3><p>Invitar a colaborar en actividades comunitarias, siempre con coordinación y medidas de seguridad.</p></article>
+          <article class="card"><div class="icon-box">📅</div><h3>Agenda comunitaria</h3><p>Publicar reuniones vecinales, jornadas de limpieza, campañas de reciclaje y actividades educativas.</p></article>
+          <article class="card"><div class="icon-box">📚</div><h3>Información ciudadana</h3><p>Orientar sobre cómo comunicar problemas, participar respetuosamente y localizar los canales oficiales.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="participation" id="participacion">
+      <div class="container">
+        <div class="section-head">
+          <span class="kicker">04 · Participación ciudadana</span>
+          <h2>La comunidad no es espectadora: es parte de la solución.</h2>
+          <p>La participación ciudadana consiste en involucrarse responsablemente en las decisiones y acciones que afectan el lugar donde vivimos.</p>
+        </div>
+        <div class="people-grid">
+          <article class="card"><div class="icon-box">🧑‍🤝‍🧑</div><h3>Residentes</h3><p>Informan situaciones, presentan ideas, participan en consultas y colaboran en actividades.</p></article>
+          <article class="card"><div class="icon-box">🏘️</div><h3>Juntas de vecinos</h3><p>Ayudan a identificar prioridades, organizar reuniones y canalizar necesidades colectivas.</p></article>
+          <article class="card"><div class="icon-box">🏛️</div><h3>Ayuntamientos e instituciones</h3><p>Reciben las solicitudes que les correspondan y pueden informar sobre sus respuestas o acciones.</p></article>
+          <article class="card"><div class="icon-box">🏫</div><h3>Centros educativos</h3><p>Promueven educación ciudadana, campañas ambientales y proyectos de servicio comunitario.</p></article>
+          <article class="card"><div class="icon-box">🌿</div><h3>Organizaciones sociales</h3><p>Apoyan iniciativas ambientales, educativas o solidarias de acuerdo con sus capacidades.</p></article>
+          <article class="card"><div class="icon-box">🛡️</div><h3>Administración de la web</h3><p>Organiza los reportes, modera contenido y protege la información de quienes participan.</p></article>
+        </div>
+        <div class="callout"><strong>Importante:</strong> la participación debe ser respetuosa, inclusiva y responsable. La web no sustituye los canales oficiales de emergencia ni garantiza que una institución resolverá un reporte.</div>
+      </div>
+    </section>
+
+    <section id="seguimiento">
+      <div class="container">
+        <div class="section-head">
+          <span class="kicker">05 · Transparencia</span>
+          <h2>Un reporte necesita algo más que un botón de “enviar”.</h2>
+          <p>Estos serían los estados propuestos para explicar con claridad en qué etapa se encuentra una solicitud.</p>
+        </div>
+        <div class="status-list">
+          <div class="status-item"><span class="status-dot"></span><strong>Recibido</strong><small>Se registró la solicitud.</small></div>
+          <div class="status-item"><span class="status-dot"></span><strong>En revisión</strong><small>Se comprueba la información.</small></div>
+          <div class="status-item"><span class="status-dot"></span><strong>En proceso</strong><small>Hay acciones en marcha.</small></div>
+          <div class="status-item"><span class="status-dot"></span><strong>Resuelto</strong><small>Se confirmó la solución.</small></div>
+          <div class="status-item"><span class="status-dot"></span><strong>Pendiente</strong><small>Aún espera respuesta.</small></div>
+        </div>
+        <p style="color:var(--muted);font-size:.9rem;margin-top:15px">Los estados son parte del diseño propuesto. En una versión real, las actualizaciones necesitarían responsables, verificación y un sistema de almacenamiento seguro.</p>
+      </div>
+    </section>
+
+    <section class="tint" id="reportar">
+      <div class="container">
+        <div class="section-head">
+          <span class="kicker">06 · Prueba interactiva</span>
+          <h2>Reporta una situación o comparte una idea.</h2>
+          <p>Prueba cómo podría funcionar la plataforma. Puedes enviar un reporte de ejemplo y verlo aparecer en esta página.</p>
+        </div>
+        <div class="demo-wrap">
+          <form class="demo-form" id="communityForm">
+            <label for="kind">¿Qué deseas compartir?</label>
+            <select id="kind" name="kind" required>
+              <option value="Reporte">Reportar un problema</option>
+              <option value="Propuesta">Presentar una propuesta</option>
+              <option value="Actividad">Anunciar una actividad</option>
+            </select>
+            <label for="category">Categoría</label>
+            <select id="category" name="category" required>
+              <option>Basura y limpieza</option>
+              <option>Calles y aceras</option>
+              <option>Alumbrado público</option>
+              <option>Medioambiente</option>
+              <option>Convivencia comunitaria</option>
+              <option>Actividad o voluntariado</option>
+              <option>Otra necesidad</option>
+            </select>
+            <label for="title">Título breve</label>
+            <input id="title" name="title" maxlength="80" placeholder="Ej. Jornada de limpieza del parque" required>
+            <label for="area">Sector o zona (opcional)</label>
+            <input id="area" name="area" maxlength="80" placeholder="Ej. Cerca del parque comunitario">
+            <label for="description">Describe la situación o tu idea</label>
+            <textarea id="description" name="description" maxlength="600" placeholder="Explica qué ocurre o qué propones, con respeto y detalles útiles." required></textarea>
+            <button class="btn btn-primary" type="submit">Añadir a la demostración →</button>
+            <div class="toast" id="toast" role="status" aria-live="polite"></div>
+            <p class="demo-note">Demostración local: lo que envíes aquí solo se muestra en esta sesión del navegador. No se envía a autoridades ni se guarda en una base de datos. No incluyas nombres, teléfonos, direcciones exactas ni información privada.</p>
+          </form>
+          <div class="reports-panel">
+            <div class="reports-top"><h3>Tablón comunitario</h3><span class="demo-badge">MODO DEMO</span></div>
+            <div id="reportsList" aria-live="polite">
+              <div class="empty"><span>📝</span><p>Aquí aparecerán los reportes y propuestas que agregues en esta demostración.</p></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="plan">
+      <div class="container">
+        <div class="section-head">
+          <span class="kicker">07 · Plan de acción</span>
+          <h2>De una idea a una herramienta útil.</h2>
+          <p>La primera versión se puede desarrollar por etapas y probar con un grupo pequeño de residentes.</p>
+        </div>
+        <div class="timeline">
+          <div class="timeline-item"><strong>Semana 1</strong><b>Investigar</b><p>Conversar con vecinos y detectar los problemas que necesitan más atención.</p></div>
+          <div class="timeline-item"><strong>Semanas 2–3</strong><b>Diseñar y construir</b><p>Crear la página, organizar las categorías y preparar reglas de uso y privacidad.</p></div>
+          <div class="timeline-item"><strong>Semana 4</strong><b>Probar</b><p>Realizar una prueba con reportes ficticios o autorizados y recoger opiniones.</p></div>
+          <div class="timeline-item"><strong>Después</strong><b>Mejorar y colaborar</b><p>Buscar alianzas, establecer responsables y habilitar el seguimiento real de solicitudes.</p></div>
+        </div>
+        <div style="margin-top:40px">
+          <div class="section-head">
+            <span class="kicker">Recursos y evaluación</span>
+            <h2>¿Qué se necesita y cómo sabremos si funciona?</h2>
+          </div>
+          <div class="evaluation-grid">
+            <article class="card"><div class="icon-box">💻</div><h3>Recursos</h3><p>Computadora o celular, internet, diseño web, una persona administradora, colaboración comunitaria y almacenamiento seguro para una versión real.</p></article>
+            <article class="card"><div class="icon-box">📊</div><h3>Indicadores</h3><p>Cantidad de reportes, propuestas presentadas, respuestas recibidas, actividades realizadas y solicitudes confirmadas como resueltas.</p></article>
+            <article class="card"><div class="icon-box">🗳️</div><h3>Opinión ciudadana</h3><p>Encuestas sencillas para saber si la página es fácil de usar, qué falta y qué cambios serían más útiles.</p></article>
+          </div>
+        </div>
+        <div class="note-box"><strong>Privacidad y seguridad:</strong> una versión real debería contar con reglas de moderación, protección de datos, prevención de acusaciones sin verificar y mecanismos para corregir información. Las emergencias deben comunicarse directamente a los servicios oficiales correspondientes.</div>
+      </div>
+    </section>
+
+    <section id="resultados">
+      <div class="container">
+        <div class="section-head">
+          <span class="kicker">08 · Impacto esperado</span>
+          <h2>¿Qué cambios queremos impulsar?</h2>
+          <p>Los resultados dependerán de la participación de los residentes y de la colaboración efectiva de las entidades responsables.</p>
+        </div>
+        <div class="problem-grid">
+          <article class="card"><div class="metric">01</div><h3>Comunicación más clara</h3><p>Un lugar organizado para compartir necesidades y propuestas.</p></article>
+          <article class="card"><div class="metric">02</div><h3>Más participación</h3><p>Personas que colaboran y se involucran en el bienestar colectivo.</p></article>
+          <article class="card"><div class="metric">03</div><h3>Mejor seguimiento</h3><p>Información más ordenada sobre las solicitudes y las respuestas recibidas.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="cta">
+      <div class="container">
+        <span class="kicker">Mi comunidad, mi responsabilidad</span>
+        <h2>El cambio empieza cuando participamos.</h2>
+        <p>Comunidad Conectada propone usar la tecnología para escuchar, organizarnos y colaborar. Una comunidad más fuerte se construye con responsabilidad compartida, respeto y acciones concretas.</p>
+        <a class="btn btn-primary" href="#reportar">Comparte una idea <span aria-hidden="true">→</span></a>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container footer-inner">
+      <div><strong>Comunidad Conectada</strong><p>Una comunidad que se comunica es una comunidad que avanza.</p><p>Proyecto educativo: “Mi comunidad, mi responsabilidad”.</p></div>
+      <a class="back-top" href="#inicio">Volver al inicio ↑</a>
+    </div>
+  </footer>
+
+  <script>
+    const menuToggle = document.getElementById('menuToggle');
+    const navLinks = document.getElementById('navLinks');
+
+    menuToggle.addEventListener('click', () => {
+      const isOpen = navLinks.classList.toggle('open');
+      menuToggle.setAttribute('aria-expanded', String(isOpen));
+    });
+    navLinks.querySelectorAll('a').forEach(link => link.addEventListener('click', () => {
+      navLinks.classList.remove('open');
+      menuToggle.setAttribute('aria-expanded', 'false');
+    }));
+
+    const form = document.getElementById('communityForm');
+    const reportsList = document.getElementById('reportsList');
+    const toast = document.getElementById('toast');
+    let reportCount = 0;
+
+    function escapeHTML(value) {
+      return value.replace(/[&<>"']/g, char => ({
+        '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+      })[char]);
+    }
+
+    form.addEventListener('submit', event => {
+      event.preventDefault();
+      if (!form.reportValidity()) return;
+
+      const data = new FormData(form);
+      const kind = String(data.get('kind'));
+      const category = String(data.get('category'));
+      const title = escapeHTML(String(data.get('title')).trim());
+      const area = escapeHTML(String(data.get('area')).trim());
+      const description = escapeHTML(String(data.get('description')).trim());
+
+      const empty = reportsList.querySelector('.empty');
+      if (empty) empty.remove();
+
+      const article = document.createElement('article');
+      article.className = 'report';
+      const tagClass = kind === 'Propuesta' || kind === 'Actividad' ? 'tag idea' : 'tag';
+      const tagLabel = kind === 'Actividad' ? 'Actividad' : kind;
+      article.innerHTML = `
+        <div class="report-head">
+          <div><h4>${title}</h4><span class="${tagClass}">${escapeHTML(tagLabel)}</span></div>
+          <span class="report-meta">Demo #${++reportCount}</span>
+        </div>
+        <p>${description}</p>
+        <div class="report-meta">${escapeHTML(category)}${area ? ' · ' + area : ''}</div>
+      `;
+      reportsList.prepend(article);
+      toast.textContent = '¡Listo! Tu aporte se añadió al tablón de demostración de esta página.';
+      toast.classList.add('show');
+      form.reset();
+      document.getElementById('kind').focus();
+    });
+  </script>
+</body>
+</html>
